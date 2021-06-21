@@ -1435,6 +1435,28 @@ local function createColor(option, parent, holder)
 	end
 end
 
+local function createDivider(option, parent, holder)
+	option.main = library:Create('Frame', {
+		LayoutOrder = option.position,
+		BackgroundTransparency = 1,
+
+		Size = UDim2.new(1, 0, 0, 10),
+		Parent = parent.content;
+	})
+
+	option.divider = library:Create('Frame', {
+		AnchorPoint = Vector2.new(0.5, 0.5),
+		Position = UDim2.fromScale(0.5, 0.5),
+
+		BorderSizePixel = 1,
+		BorderColor3 = Color3.fromRGB(50, 50, 50),
+		BackgroundColor3 = Color3.fromRGB(20, 20, 20),
+
+		Size = UDim2.new(1, -10, 0, 3),
+		Parent = option.main,
+	})
+end
+
 local function loadOptions(option, holder)
 	for _,newOption in next, option.options do
 		if newOption.type == "label" then
@@ -1453,6 +1475,8 @@ local function loadOptions(option, holder)
 			createSlider(newOption, option)
 		elseif newOption.type == "color" then
 			createColor(newOption, option, holder)
+		elseif newOption.type == 'divider' then
+			createDivider(newOption, option, holder)
 		elseif newOption.type == "folder" then
 			newOption:init()
 		end
@@ -1468,6 +1492,15 @@ local function getFnctions(parent)
 		table.insert(self.options, option)
 		
 		return option
+	end
+
+	function parent:AddDivider(option)
+		option = type(option) == 'table' and option or {}
+		option.type = 'divider'
+		option.position = #self.options
+		table.insert(self.options, option)
+
+		return options
 	end
 	
 	function parent:AddToggle(option)
