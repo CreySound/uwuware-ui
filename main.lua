@@ -1650,7 +1650,7 @@ function library:Init()
 	elseif type(gethui) == 'function' then
 		self.base.Parent = gethui()
 	else
-		self.base.name = tostring(math.random())
+		self.base.Name = tostring(math.random())
 		self.base.Parent = game:GetService"CoreGui"
 	end
 	
